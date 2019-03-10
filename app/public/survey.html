@@ -217,12 +217,33 @@
 
         <br><br><br>
         
-        <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" id="submit" class="btn btn-primary" data-toggle="modal" data-target="#match">Submit</button>
 
     <div>
 
     <div class="card-footer">
         <a href="../friends" class="stretched-link">API Table Link</a>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="match" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Your Closest Match!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <p id="matchName"></p>
+                <img src="" id="matchImage" width="70%" style="margin-left:15%" />
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
     </div>
 
     <script>
@@ -239,24 +260,70 @@
                     $("#question-two").val(),
                     $("#question-three").val(),
                     $("#question-four").val(),
+                    $("#question-five").val(),
+                    $("#question-six").val(),
+                    $("#question-seven").val(),
+                    $("#question-eight").val(),
+                    $("#question-nine").val(),
+                    $("#question-ten").val(),
                 ]
             };
 
 
             $.post("../data/friends", userData, function (data) {
 
-                if (data) {
-                    alert("Yay! You are officially booked!");
-                } else {
-                    alert("Sorry you are on the wait list");
-                }
 
+                alert("You've completed the survey!");
+
+                $("#name").val("")
+                $("#image").val("")
                 $("#question-one").val("")
                 $("#question-two").val("")
                 $("#question-three").val("")
                 $("#question-four").val("")
+                $("#question-five").val("")
+                $("#question-six").val("")
+                $("#question-seven").val("")
+                $("#question-eight").val("")
+                $("#question-nine").val("")
+                $("#question-ten").val("")
 
             });
+
+            $.get("../friends").then( function(data){
+
+                var difference = []
+                var complete = 0;
+ 
+                for(var i=0; i< (data.length-1); i++){
+
+                    var num = data[i].scores
+
+                    for(var j=0; j< 10; j++){
+
+                        var number = num[j]
+                        var number2 = data[data.length-1].scores[j]
+
+                        var total = number - number2
+
+                        total = Math.abs(total)
+                        
+                        complete = complete + total
+
+                    }
+                    difference.push(complete)
+                    complete = 0;
+                }
+
+                var closest = Math.min( ...difference )
+                var key = difference.indexOf(closest)
+                console.log(key)
+
+
+                $("#matchName").text(data[key].name)
+                $("#matchImage").attr("src", data[key].photo)
+
+            })
 
         });
 
