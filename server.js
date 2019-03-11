@@ -4,7 +4,7 @@ const htmlRoutes = require("./app/routing/htmlRoutes")
 const apiRoutes = require("./app/routing/apiRoutes")
 const friends = require("./app/data/friends")
 const app = express();
-const PORT = 8080;
+var PORT = process.env.PORT || 8080;
 
 htmlRoutes(app, path)
 apiRoutes(app, express, friends)
