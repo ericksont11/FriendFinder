@@ -1,0 +1,38 @@
+.jumbotron {
+    background-color:  #0099CC;
+    color: white;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
+
+body {
+    background-color: hsl(24, 21%, 93%)
+}
+
+h3, h4 {
+    color: #33b5e5;
+}
+
+.card-footer, .streched-link {
+    background-color: #0099CC;
+    color: white;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+}
+
+a, .footer-text {
+    color: white;
+    text-align: center;
+}
+
+img {
+    height: auto;
+    width: 40vw;
+    margin-top: auto;
+    margin-left: 30vw;
+}
+
+.next {
+    color: blue
+}
