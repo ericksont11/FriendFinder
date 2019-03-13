@@ -1,10 +1,12 @@
 const express = require("express");
 const path = require("path")
-const htmlRoutes = require("./app/routing/htmlRoutes")
-const apiRoutes = require("./app/routing/apiRoutes")
-const friends = require("./app/data/friends")
+const htmlRoutes = require("./routing/htmlRoutes")
+const apiRoutes = require("./routing/apiRoutes")
+const friends = require("./data/friends")
 const app = express();
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 3030;
+
+app.use(express.static('public'));
 
 htmlRoutes(app, path)
 apiRoutes(app, express, friends)
