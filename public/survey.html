@@ -219,7 +219,7 @@
 
         <br><br>
         
-        <button type="submit" id="submit" class="btn btn-primary" data-toggle="modal" data-target="#match">Submit</button>
+        <button type="submit" id="submit" class="btn btn-primary" data-target="#match">Submit</button>
     
         <br><br><br>
 
@@ -250,89 +250,97 @@
     <br><br>
     
     <div class="card-footer">
-        <a href="../friends" class="stretched-link">Link to Friends API</a>
+        <a href="../api/friends" class="stretched-link">Link to Friends API</a>
     </div>
     
 
     <script>
 
         $("#submit").click(function (event) {
+   
+            if ($("#question-one").val() !== "" && $("#question-two").val() !== "" && $("#question-three").val() !== "" && 
+                $("#question-four").val() !== "" && $("#question-five").val() !== "" && $("#question-six").val() !== "" &&
+                $("#question-seven").val() !== "" && $("#question-eight").val() !== "" && $("#question-nine").val() !== "" &&
+                $("#question-ten").val() !== "" && $("#question-name").val() !== "" && $("#question-image").val() !== "") {
 
-            event.preventDefault();
-
-            var userData = {
-                name: $("#name").val().trim(),
-                photo: $("#image").val().trim(),
-                scores: [
-                    $("#question-one").val(),
-                    $("#question-two").val(),
-                    $("#question-three").val(),
-                    $("#question-four").val(),
-                    $("#question-five").val(),
-                    $("#question-six").val(),
-                    $("#question-seven").val(),
-                    $("#question-eight").val(),
-                    $("#question-nine").val(),
-                    $("#question-ten").val(),
-                ]
-            };
-
-
-            $.post("../data/friends", userData, function (data) {
+                event.preventDefault();
+                $('#match').modal('show')
+                var userData = {
+                    name: $("#name").val().trim(),
+                    photo: $("#image").val().trim(),
+                    scores: [
+                        $("#question-one").val(),
+                        $("#question-two").val(),
+                        $("#question-three").val(),
+                        $("#question-four").val(),
+                        $("#question-five").val(),
+                        $("#question-six").val(),
+                        $("#question-seven").val(),
+                        $("#question-eight").val(),
+                        $("#question-nine").val(),
+                        $("#question-ten").val(),
+                    ]
+                };
 
 
-                alert("You've completed the survey!");
+                $.post("../data/friends", userData, function (data) {
 
-                $("#name").val("")
-                $("#image").val("")
-                $("#question-one").val("")
-                $("#question-two").val("")
-                $("#question-three").val("")
-                $("#question-four").val("")
-                $("#question-five").val("")
-                $("#question-six").val("")
-                $("#question-seven").val("")
-                $("#question-eight").val("")
-                $("#question-nine").val("")
-                $("#question-ten").val("")
 
-            });
+                    alert("You've completed the survey!");
 
-            $.get("../friends").then( function(data){
+                    $("#name").val("")
+                    $("#image").val("")
+                    $("#question-one").val("")
+                    $("#question-two").val("")
+                    $("#question-three").val("")
+                    $("#question-four").val("")
+                    $("#question-five").val("")
+                    $("#question-six").val("")
+                    $("#question-seven").val("")
+                    $("#question-eight").val("")
+                    $("#question-nine").val("")
+                    $("#question-ten").val("")
 
-                var difference = []
-                var complete = 0;
- 
-                for(var i=0; i< (data.length-1); i++){
+                });
 
-                    var num = data[i].scores
+                $.get("../api/friends").then( function(data){
 
-                    for(var j=0; j< 10; j++){
+                    var difference = []
+                    var complete = 0;
+    
+                    for(var i=0; i< (data.length-1); i++){
 
-                        var number = num[j]
-                        var number2 = data[data.length-1].scores[j]
+                        var num = data[i].scores
 
-                        var total = number - number2
+                        for(var j=0; j< 10; j++){
 
-                        total = Math.abs(total)
-                        
-                        complete = complete + total
+                            var number = num[j]
+                            var number2 = data[data.length-1].scores[j]
 
+                            var total = number - number2
+
+                            total = Math.abs(total)
+                            
+                            complete = complete + total
+
+                        }
+                        difference.push(complete)
+                        complete = 0;
                     }
-                    difference.push(complete)
-                    complete = 0;
-                }
 
-                var closest = Math.min( ...difference )
-                var key = difference.indexOf(closest)
-                console.log(key)
+                    var closest = Math.min( ...difference )
+                    var key = difference.indexOf(closest)
+                    console.log(key)
 
 
-                $("#matchName").text(data[key].name)
-                $("#matchImage").attr("src", data[key].photo)
+                    $("#matchName").text(data[key].name)
+                    $("#matchImage").attr("src", data[key].photo)
 
-            })
-
+                })
+            }
+            else {
+                alert("Fill out every part of the survey to continue!");
+            }
         });
 
     </script>
